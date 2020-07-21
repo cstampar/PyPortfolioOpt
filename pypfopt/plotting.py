@@ -140,13 +140,18 @@ def plot_efficient_frontier(cla, points=100, show_assets=True, **kwargs):
     ax.plot(sigmas, mus, label="Efficient frontier")
 
     if show_assets:
+        x = np.sqrt(np.diag(cla.cov_matrix))
+        y = cla.expected_returns
+        n = cla.tickers
         ax.scatter(
-            np.sqrt(np.diag(cla.cov_matrix)),
-            cla.expected_returns,
+            x,
+            y,
             s=30,
             color="k",
             label="assets",
         )
+        for i, txt in enumerate(n):
+            ax.annotate(txt, (x[i], y[i]), xytext=(x[i]+0.02, y[i]))
 
     ax.scatter(optimal_risk, optimal_ret, marker="x", s=100, color="r", label="optimal")
     ax.legend()
